@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  my-spring-boot-app:
+    image: nginx-images-spring-boot-app:latest
+    container_name: nginx-images-spring-boot-app
+    ports:
+      - "8080:8080"
+        
+  nginx:
+    image: openresty/openresty:alpine
+    container_name: openresty-nginx
+    ports:
+      - "8081:81"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/scripts/cache_purge.lua:/usr/local/openresty/nginx/cache_purge.lua
+    depends_on:
+      - my-spring-boot-app
